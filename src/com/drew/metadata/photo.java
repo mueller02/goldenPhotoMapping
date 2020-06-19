@@ -33,6 +33,7 @@ public class photo {
         theDate = LocalDate.of(2020,6,17);
         theTime = LocalTime.of((int)(Math.random()*24), (int)(Math.random()*60),(int)(Math.random()*60));
         theNode = node;
+
     }
 
     public void setNodeInfo(Node n){
@@ -55,6 +56,7 @@ public class photo {
             counter++;
 
         }
+
 
     }
 

@@ -31,15 +31,17 @@ public class photoGallery {
             while(scanner.hasNext()) {
                 String line = scanner.nextLine();
                 allData.add(line);
-                nodeIndex++;
+
 
                 if(Pattern.matches("\\s <node id=.*", line)){
                     Node tempNode = new Node(line, nodeIndex);
                     allNodes.add(tempNode);
-                    allData.add(line);
                 }
+                nodeIndex++;
 
             }
+            System.out.println(allData.get(allData.size()-1));
+            //System.out.println("aaa");
             scanner.close();
 
 
@@ -57,14 +59,21 @@ public class photoGallery {
     }
 
     public void WriteTags(String FilePath) {
+        try {
         for(int i = 0; i < sizeOfGallery; i++){
             int indexGuess = gallery[i].theNode.index;
-
+           // System.out.println("1st: " + indexGuess);
+            //System.out.println(gallery[i].nodeID);
             while(true){
                 if(allData.get(indexGuess) == gallery[i].theNode.Nodetxt){
-                    allData.add(indexGuess+1, "    <tag k='image' v='"  + gallery[i].photo_id +  ".jpg' />");
-                    if(allData.get(indexGuess + 2).contains("<node id=")){
-                        allData.add(indexGuess+2,"  </node>");
+
+;
+
+                    if(allData.get(indexGuess).contains("<node id=")){
+
+                        allData.add(indexGuess,"  <node id='" + gallery[i].nodeID + "' visible='true' version='4' lat='" + gallery[i].Latitude + "' lon='" + gallery[i].Longitude + "'>\n"+ "    <tag k='image' v='"  + gallery[i].photo_id +  ".jpg' />" +"\n  </node>");
+                    }else{
+                        allData.add(indexGuess +1, "    <tag k='image' v='"  + gallery[i].photo_id +  ".jpg' />");
                     }
                     break;
                 }
@@ -73,7 +82,7 @@ public class photoGallery {
 
         }
 
-        try {
+
             FilePath = FilePath + "//GoldenMapTagged.osm";
             File output = new File(FilePath);
             FileWriter writer = new FileWriter(output);
@@ -81,6 +90,7 @@ public class photoGallery {
             for (String data : allData) {
                 writer.write(data + "\n");
             }
+            writer.close();
 
         }catch (Exception e){
             System.out.println("Error: " + e);

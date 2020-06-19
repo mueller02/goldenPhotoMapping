@@ -8,4 +8,8 @@ public class Node {
         Nodetxt = node;
         index = i;
     }
+
+    public void setNodetxt(String n){
+        Nodetxt = n;
+    }
 }
