@@ -7,6 +7,7 @@ import java.io.File;
 import java.sql.Time;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,8 +22,9 @@ public class photo {
     double Latitude;
     LocalDate theDate;
     LocalTime theTime;
+    Node theNode;
 
-    photo(int id, String filepath, String node){
+    photo(int id, String filepath, Node node){
         photo_id = id;
         photo_filepath = filepath + "\\" + (id) + ".jpg"; //create filepath to each individual photo
         image = new File(photo_filepath);
@@ -30,12 +32,13 @@ public class photo {
         setNodeInfo(node);
         theDate = LocalDate.of(2020,6,17);
         theTime = LocalTime.of((int)(Math.random()*24), (int)(Math.random()*60),(int)(Math.random()*60));
+        theNode = node;
     }
 
-    public void setNodeInfo(String txt){
+    public void setNodeInfo(Node n){
 
         Pattern p = Pattern.compile("\'([^\']*)\'");
-        Matcher m = p.matcher(txt);
+        Matcher m = p.matcher(n.Nodetxt);
 
         int counter = 0;
         while (m.find()) {
@@ -53,10 +56,6 @@ public class photo {
 
         }
 
-    }
-
-    public void WriteTags(){
-        //TODO
     }
 
     public String toString(){

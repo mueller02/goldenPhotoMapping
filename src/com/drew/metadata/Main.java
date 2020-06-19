@@ -31,11 +31,12 @@ public class Main
     {
         File osmFilePath = new File("C:\\Users\\andym\\OneDrive\\Desktop\\Denver-FrontrangeMaps\\Golden.osm"); //use filepath for .osm file
         String imageFilePath = "C:\\Users\\andym\\OneDrive\\Pictures\\Camera Roll\\GoldenMapPhotos"; //filepath of folder with 1000 photos
-        int sizeOfGallery = 1; //how many photos you want in your gallery. Must be less than or equal to number of files in folder.
+        String osmTaggedFilePath = "C:\\Users\\andym\\OneDrive\\Desktop\\Denver-FrontrangeMaps";
+        int sizeOfGallery = 1000; //how many photos you want in your gallery. Must be less than or equal to number of files in folder.
 
         photoGallery gallery = new photoGallery(imageFilePath, osmFilePath, sizeOfGallery);
         gallery.makePhotoGallery(); //compile array of photo objects, that have photo and metadata
-
+        gallery.WriteTags(osmTaggedFilePath);
 
 
 

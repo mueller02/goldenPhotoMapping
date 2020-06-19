@@ -1,6 +1,9 @@
 package com.drew.metadata;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -9,6 +12,8 @@ public class photoGallery {
     int sizeOfGallery;
     String pictureFilePath;
     File osmFilePath;
+    ArrayList<Node> allNodes = new ArrayList<>(); //stores all nodes from .osm
+    ArrayList<String> allData = new ArrayList<>(); //stores all lines from .osm file
 
 
     public photoGallery(String pics, File osm, int size){
@@ -21,17 +26,17 @@ public class photoGallery {
     public void makePhotoGallery(){
         try {
             Scanner scanner = new Scanner(osmFilePath);
-            int numOfNodes = 16619;                     //Number of nodes in .osm file
-            String[] allNodes = new String[numOfNodes];     //An array the exact size as the number of nodes we have
             int nodeIndex = 0;
 
             while(scanner.hasNext()) {
                 String line = scanner.nextLine();
+                allData.add(line);
+                nodeIndex++;
 
                 if(Pattern.matches("\\s <node id=.*", line)){
-                    allNodes[nodeIndex] = line;
-                    nodeIndex++;
-                    //System.out.println(nodeIndex + line); //Uncomment this line and comment out two lines above to see how many nodes are in your.osm file
+                    Node tempNode = new Node(line, nodeIndex);
+                    allNodes.add(tempNode);
+                    allData.add(line);
                 }
 
             }
@@ -39,13 +44,45 @@ public class photoGallery {
 
 
             for(int i=0; i < sizeOfGallery; i++){
-                String node = allNodes[(int)(Math.random()*numOfNodes)];
+                Node node = allNodes.get((int)(Math.random()*allNodes.size()));
                 photo image = new photo(i+1, pictureFilePath, node);
                 gallery[i] = image;
-                //System.out.println(image.toString());
+                System.out.println(image.toString());
+
             }
 
         } catch (Exception e){
+            System.out.println("Error: " + e);
+        }
+    }
+
+    public void WriteTags(String FilePath) {
+        for(int i = 0; i < sizeOfGallery; i++){
+            int indexGuess = gallery[i].theNode.index;
+
+            while(true){
+                if(allData.get(indexGuess) == gallery[i].theNode.Nodetxt){
+                    allData.add(indexGuess+1, "    <tag k='image' v='"  + gallery[i].photo_id +  ".jpg' />");
+                    if(allData.get(indexGuess + 2).contains("<node id=")){
+                        allData.add(indexGuess+2,"  </node>");
+                    }
+                    break;
+                }
+                indexGuess++;
+            }
+
+        }
+
+        try {
+            FilePath = FilePath + "//GoldenMapTagged.osm";
+            File output = new File(FilePath);
+            FileWriter writer = new FileWriter(output);
+
+            for (String data : allData) {
+                writer.write(data + "\n");
+            }
+
+        }catch (Exception e){
             System.out.println("Error: " + e);
         }
     }
