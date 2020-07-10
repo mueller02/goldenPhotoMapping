@@ -24,14 +24,21 @@ public class photo {
     LocalTime theTime;
     Node theNode;
 
-    photo(int id, String filepath, Node node){
+    photo(int id, String filepath, Node node, LocalTime time){
         photo_id = id;
         photo_filepath = filepath + "\\" + (id) + ".jpg"; //create filepath to each individual photo
         image = new File(photo_filepath);
         outside = (photo_id % 20 == 0) ? true:false;
         setNodeInfo(node);
         theDate = LocalDate.of(2020,6,17);
-        theTime = LocalTime.of((int)(Math.random()*24), (int)(Math.random()*60),(int)(Math.random()*60));
+
+        int mins = time.getMinute() + 1;
+        int hour = time.getHour();
+        if(mins == 60){
+            mins = 0;
+            hour +=1;
+        }
+        theTime = LocalTime.of(hour, mins,(int)(Math.random()*60));
         theNode = node;
 
     }
