@@ -117,8 +117,8 @@ public class photoGallery {
                 writer.write(picture.nodeID + "\n");
                 writer.write(picture.Longitude + "\n");
                 writer.write(picture.Latitude + "\n");
-                writer.write(picture.theDate + "\n");
-                writer.write(picture.theTime + "\n");
+                writer.write(picture.theDate.getYear() + " " + picture.theDate.getMonthValue() + " "+ picture.theDate.getDayOfMonth() + "\n");
+                writer.write(picture.theTime.getHour() + " " + picture.theTime.getMinute() + " " + picture.theTime.getSecond() + "\n");
                 writer.write("\n");
                 System.out.println(picture.toString());
             }
